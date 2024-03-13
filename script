@@ -1,0 +1,23 @@
+#!/bin/bash
+
+for i in {1..6}; do
+  if [ $i -eq 4 ]; then
+    touch "complex_file_$i.txt"
+    echo "Log for $i" > "complex_file_$i.txt"
+    tar -czf "archive_$i.tar.gz" "complex_file_$i.txt"
+    echo "File $i created, data logged, and archived."
+  elif [ $i -eq 3 ] || [ $i -eq 5 ]; then
+    mkdir "complex_dir_$i"
+    cd "complex_dir_$i"
+    touch "inside_$i.txt"
+    echo "Navigated to $(pwd), created file inside_$i.txt"
+    cd ..
+  else
+    echo "Iteration $i: Nothing special."
+    dd if=/dev/zero of=filler_$i bs=1 count=1 2>/dev/null
+  fi
+done
+
+echo "Script completed. Cleaning up..."
+rm filler_*
+echo "Filler files removed."
